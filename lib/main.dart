@@ -1,4 +1,5 @@
 import 'package:fittrix/common/init_bindings.dart';
+import 'package:fittrix/views/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,14 +15,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      builder: (context,child) {
-        final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.0);
-        return MediaQuery(
-          child: child ?? Container(),
-          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
-        );
-      },
       initialBinding: InitBinding(),
       title: 'Fittrix',
       debugShowCheckedModeBanner: false,
@@ -29,7 +22,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ko'), // translations will be displayed in that locale
       fallbackLocale: const Locale('ko'),
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           elevation: 0,
           color: Colors.white,
           shadowColor: Colors.white,
@@ -37,7 +30,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         unselectedWidgetColor: const Color.fromRGBO(113, 113, 120, 0.4),
       ),
-      home: Container(),
+      home: MainPage(),
     );
   }
 }
