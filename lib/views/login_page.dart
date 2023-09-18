@@ -8,28 +8,36 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: (controller.loginId.isEmpty) ? Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: controller.textController,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: const InputDecoration(
-                    hintText: '12345'
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentScope = FocusScope.of(context);
+        if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: Obx(() => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: (controller.loginId.isEmpty) ? Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: controller.textController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: const InputDecoration(
+                      hintText: '12345'
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 20),
-            ElevatedButton(onPressed: controller.login, child: const Text('로그인'))
-          ],
-        ) : Text('${controller.loginId} 님 로그인중입니다.')
-      ),
-    ));
+              const SizedBox(width: 20),
+              ElevatedButton(onPressed: controller.login, child: const Text('로그인'))
+            ],
+          ) : Text('${controller.loginId} 님 로그인중입니다.')
+        ),
+      )),
+    );
   }
 }

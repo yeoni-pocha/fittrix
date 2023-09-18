@@ -43,7 +43,7 @@ class MainController extends GetxController {
         break;
       case PageName.RECORD:
         if(isLoginCheck()) {
-
+          _changePage(value, hasGesture: hasGesture);
         }
         break;
       case PageName.LOGIN:
