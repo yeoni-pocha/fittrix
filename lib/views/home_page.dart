@@ -5,6 +5,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Center(
+      child: Text('홈!!', style: TextStyle(fontSize: 20)),
+    );
   }
 }

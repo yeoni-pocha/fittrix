@@ -7,16 +7,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 enum PageName{HOME, WRITE, RECORD, LOGIN}
-enum menuName{LUNGE, SQUAD, PUSHUP, LEGRAISES}
 
 class MainController extends GetxController {
 
   static MainController get to => Get.find();
 
   final loginController = LoginController.to;
-  final changePageUniqueId = UniqueKey().toString();
 
-  int pageIndex = 0;
+  RxInt pageIndex = 0.obs;
   List<int> bottomHistory = [0];
   String? menuName;
 
@@ -28,17 +26,19 @@ class MainController extends GetxController {
         break;
       case PageName.WRITE:
         if(isLoginCheck()) {
-          menuName = await showMenu(
-            context: Get.context!,
-            position: const RelativeRect.fromLTRB(0.0, 1000.0, 1000.0, 0.0),
-            items: <PopupMenuItem<String>>[
-              PopupMenuItem<String>(child: Text('런치'), value: 'lunge'),
-              PopupMenuItem<String>(child: Text('스쿼트'), value: 'squad'),
-              PopupMenuItem<String>(child: Text('푸시업'), value: 'pushup'),
-              PopupMenuItem<String>(child: Text('레그 레이즈'), value: 'legraises'),
-            ],
-          );
-          update([changePageUniqueId]);
+          if(hasGesture) {
+            menuName = await showMenu(
+              context: Get.context!,
+              position: const RelativeRect.fromLTRB(0.0, 1000.0, 1000.0, 0.0),
+              items: <PopupMenuItem<String>>[
+                PopupMenuItem<String>(child: Text('런치'), value: 'lunge'),
+                PopupMenuItem<String>(child: Text('스쿼트'), value: 'squad'),
+                PopupMenuItem<String>(child: Text('푸시업'), value: 'pushup'),
+                PopupMenuItem<String>(child: Text('레그 레이즈'), value: 'legraises'),
+              ],
+            );
+          }
+          _changePage(value, hasGesture: hasGesture);
         }
         break;
       case PageName.RECORD:
@@ -50,16 +50,15 @@ class MainController extends GetxController {
         _changePage(value, hasGesture: hasGesture);
         break;
     }
-    pageIndex = value;
   }
 
   void _changePage(int value, {bool hasGesture = true}) {
-    pageIndex = value;
+    pageIndex(value);
     if(!hasGesture) return;
     if(bottomHistory.last != value) {
       bottomHistory.add(value);
     }
-    update([changePageUniqueId]);
+    update();
   }
 
   Future<bool> willPopAction() async {

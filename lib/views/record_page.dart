@@ -2,9 +2,38 @@ import 'package:fittrix/components/image_data.dart';
 import 'package:fittrix/viewModels/record_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fittrix/model/record.dart';
 
 class RecordPage extends GetView<RecordController> {
   const RecordPage({Key? key}) : super(key: key);
+
+  Widget recoredCard(Record record) {
+    return Card(
+      color: const Color(0xffE2E8F0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+        side: const BorderSide(width: 1, color: Color(0xffE2E8F0)),
+      ),
+      child: Column(
+        children: [
+          Container(
+              width: Get.width,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              child: Text(record.regDate ?? '')
+          ),
+          Container(
+              width: Get.width,
+              color: Colors.white,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(12),
+              child: Text(record.statusMsg ?? '')
+          )
+        ],
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +53,13 @@ class RecordPage extends GetView<RecordController> {
           ),
         ),
       ),
-      body: ListView.builder(
-        padding:const EdgeInsets.all(8),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return Container(
-            height: 50,
-            color: Colors.yellow,
-          );
+      body: controller.recordList.isNotEmpty ? ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        itemCount: controller.recordList.length,
+        itemBuilder: (context, i) {
+          return recoredCard(controller.recordList[i]);
         }
-      )
+      ) : const Center(child: Text('운동 기록이 없습니다.'))
     );
   }
 }
