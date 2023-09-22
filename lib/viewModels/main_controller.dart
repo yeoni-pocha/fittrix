@@ -5,10 +5,17 @@ import 'package:fittrix/viewModels/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 enum PageName{HOME, WRITE, RECORD, LOGIN}
 
 class MainController extends GetxController {
+
+  @override
+  void dispose() {
+    videoController?.dispose();
+    super.dispose();
+  }
 
   static MainController get to => Get.find();
 
@@ -17,6 +24,7 @@ class MainController extends GetxController {
   RxInt pageIndex = 0.obs;
   List<int> bottomHistory = [0];
   String? menuName;
+  VideoPlayerController? videoController;
 
   Future<void> changeBottomNav(int value, {bool hasGesture = true}) async {
     var page = PageName.values[value];
@@ -39,17 +47,21 @@ class MainController extends GetxController {
             );
           }
           _changePage(value, hasGesture: hasGesture);
+          videoController?.pause();
         }
         break;
       case PageName.RECORD:
         if(isLoginCheck()) {
           _changePage(value, hasGesture: hasGesture);
+          videoController?.pause();
         }
         break;
       case PageName.LOGIN:
         _changePage(value, hasGesture: hasGesture);
+        videoController?.pause();
         break;
     }
+
   }
 
   void _changePage(int value, {bool hasGesture = true}) {
